@@ -1,0 +1,14 @@
+[
+  {
+    "id": 0,
+    "username": "new_fsociety_member",
+    "usermail": "member@fsociety.com",
+    "password": "$2a$10$43SnpK.KLAEOT0CpLOZIjOHN5mXC/VKsM9opVCtvWH7e80EIDb0Ky"
+  },
+  {
+    "id": 1,
+    "username": "new_faoty_member",
+    "usermail": "member@fsocty.com",
+    "password": "$2a$10$KsfPesR.XO9nELxE8biNZOvYjyxP.IdROzWUbEzwOCja3.EUlXccy"
+  }
+]
