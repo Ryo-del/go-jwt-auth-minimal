@@ -3,7 +3,6 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"net/http"
 	"os"
 	"time"
@@ -29,9 +28,34 @@ type CustomClaims struct {
 
 var dataFile string = "data.json"
 var jwtSecretKey = []byte("YOUR_EXTREMELY_STRONG_SECRET_KEY") // Секретный ключ для подписи JWT
+// Middleware для обработки CORS
+func CORSMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		origin := r.Header.Get("Origin")
+		if origin != "" {
+			w.Header().Set("Access-Control-Allow-Origin", origin)
+		} else {
+			w.Header().Set("Access-Control-Allow-Origin", "*")
+		}
+		// Помечаем, что ответ зависит от Origin, чтобы кэширующие прокси не мешали
+		w.Header().Set("Vary", "Origin")
+		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+		// Разрешаем отправлять cookie/credentials
+		w.Header().Set("Access-Control-Allow-Credentials", "true")
 
+		// Обязательная обработка Preflight-запросов
+		if r.Method == http.MethodOptions {
+			w.WriteHeader(http.StatusOK)
+			return
+		}
+
+		// Передаем управление основному обработчику
+		next.ServeHTTP(w, r)
+	})
+}
 func LoadUser() ([]User, error) {
-	data, err := ioutil.ReadFile(dataFile)
+	data, err := os.ReadFile(dataFile)
 	if err != nil {
 		fmt.Printf("Ошибка чтения файла %s: %v\n", dataFile, err)
 		if os.IsNotExist(err) {
@@ -39,12 +63,8 @@ func LoadUser() ([]User, error) {
 		}
 		return nil, fmt.Errorf("ошибка чтения файла: %w", err)
 	}
-	var users []User
-	// Проверка на пустой файл перед парсингом
-	if len(data) == 0 || string(data) == "null" {
-		return []User{}, nil
-	}
 
+	var users []User
 	err = json.Unmarshal(data, &users)
 	if err != nil {
 		fmt.Printf("Ошибка парсинга JSON: %v. Данные: %s\n", err, string(data))
@@ -191,17 +211,29 @@ func SingInHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Error encoding data", http.StatusInternalServerError)
 		return
 	}
-	err = ioutil.WriteFile(dataFile, updatedData, 0644)
+
+	err = os.WriteFile(dataFile, updatedData, 0644)
 	if err != nil {
+		// Если запись не удалась, возвращаем ошибку, и прекращаем выполнение
 		http.Error(w, "Error writing data file", http.StatusInternalServerError)
 		return
 	}
+
+	// Если все успешно, отправляем ответ 201
 	w.WriteHeader(http.StatusCreated)
-	w.Write([]byte("User registered successfully"))
+	w.Write([]byte("Sign up successful"))
 }
+
 func main() {
-	http.HandleFunc("/singin", SingInHandler)
-	http.HandleFunc("/login", LoaginHandler)
+	mux := http.NewServeMux()
+	mux.HandleFunc("/singin", SingInHandler)
+	mux.HandleFunc("/login", LoaginHandler)
+	fs := http.FileServer(http.Dir("./frontend"))
+	mux.Handle("/", fs)
+
+	// Оборачиваем роутер в CORS Middleware
+	handler := CORSMiddleware(mux)
+
 	fmt.Println("Server starting on :8080")
-	http.ListenAndServe(":8080", nil)
+	http.ListenAndServe(":8080", handler) // Используем обернутый handler
 }
