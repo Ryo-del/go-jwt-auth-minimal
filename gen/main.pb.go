@@ -21,27 +21,29 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-type UserRequest struct {
+type LogEntry struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            int32                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	DeviceId      int32                  `protobuf:"varint,1,opt,name=device_id,json=deviceId,proto3" json:"device_id,omitempty"`
+	Message       string                 `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
+	Level         string                 `protobuf:"bytes,3,opt,name=level,proto3" json:"level,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *UserRequest) Reset() {
-	*x = UserRequest{}
+func (x *LogEntry) Reset() {
+	*x = LogEntry{}
 	mi := &file_proto_main_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *UserRequest) String() string {
+func (x *LogEntry) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*UserRequest) ProtoMessage() {}
+func (*LogEntry) ProtoMessage() {}
 
-func (x *UserRequest) ProtoReflect() protoreflect.Message {
+func (x *LogEntry) ProtoReflect() protoreflect.Message {
 	mi := &file_proto_main_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -53,91 +55,98 @@ func (x *UserRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use UserRequest.ProtoReflect.Descriptor instead.
-func (*UserRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use LogEntry.ProtoReflect.Descriptor instead.
+func (*LogEntry) Descriptor() ([]byte, []int) {
 	return file_proto_main_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *UserRequest) GetId() int32 {
+func (x *LogEntry) GetDeviceId() int32 {
 	if x != nil {
-		return x.Id
+		return x.DeviceId
 	}
 	return 0
 }
 
-type UserResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
-	Age           int32                  `protobuf:"varint,2,opt,name=age,proto3" json:"age,omitempty"`
-	Tags          []string               `protobuf:"bytes,3,rep,name=tags,proto3" json:"tags,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *UserResponse) Reset() {
-	*x = UserResponse{}
-	mi := &file_proto_main_proto_msgTypes[1]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *UserResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*UserResponse) ProtoMessage() {}
-
-func (x *UserResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_main_proto_msgTypes[1]
+func (x *LogEntry) GetMessage() string {
 	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use UserResponse.ProtoReflect.Descriptor instead.
-func (*UserResponse) Descriptor() ([]byte, []int) {
-	return file_proto_main_proto_rawDescGZIP(), []int{1}
-}
-
-func (x *UserResponse) GetName() string {
-	if x != nil {
-		return x.Name
+		return x.Message
 	}
 	return ""
 }
 
-func (x *UserResponse) GetAge() int32 {
+func (x *LogEntry) GetLevel() string {
 	if x != nil {
-		return x.Age
+		return x.Level
+	}
+	return ""
+}
+
+type UploadSummary struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	RecordCount   int32                  `protobuf:"varint,1,opt,name=record_count,json=recordCount,proto3" json:"record_count,omitempty"`
+	Status        string                 `protobuf:"bytes,2,opt,name=status,proto3" json:"status,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UploadSummary) Reset() {
+	*x = UploadSummary{}
+	mi := &file_proto_main_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UploadSummary) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UploadSummary) ProtoMessage() {}
+
+func (x *UploadSummary) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_main_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UploadSummary.ProtoReflect.Descriptor instead.
+func (*UploadSummary) Descriptor() ([]byte, []int) {
+	return file_proto_main_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *UploadSummary) GetRecordCount() int32 {
+	if x != nil {
+		return x.RecordCount
 	}
 	return 0
 }
 
-func (x *UserResponse) GetTags() []string {
+func (x *UploadSummary) GetStatus() string {
 	if x != nil {
-		return x.Tags
+		return x.Status
 	}
-	return nil
+	return ""
 }
 
 var File_proto_main_proto protoreflect.FileDescriptor
 
 const file_proto_main_proto_rawDesc = "" +
 	"\n" +
-	"\x10proto/main.proto\x12\x04user\"\x1d\n" +
-	"\vUserRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\x05R\x02id\"H\n" +
-	"\fUserResponse\x12\x12\n" +
-	"\x04name\x18\x01 \x01(\tR\x04name\x12\x10\n" +
-	"\x03age\x18\x02 \x01(\x05R\x03age\x12\x12\n" +
-	"\x04tags\x18\x03 \x03(\tR\x04tags2?\n" +
-	"\vUserService\x120\n" +
-	"\aGetUser\x12\x11.user.UserRequest\x1a\x12.user.UserResponseB\x0fZ\r./gen;user_pbb\x06proto3"
+	"\x10proto/main.proto\x12\x04user\"W\n" +
+	"\bLogEntry\x12\x1b\n" +
+	"\tdevice_id\x18\x01 \x01(\x05R\bdeviceId\x12\x18\n" +
+	"\amessage\x18\x02 \x01(\tR\amessage\x12\x14\n" +
+	"\x05level\x18\x03 \x01(\tR\x05level\"J\n" +
+	"\rUploadSummary\x12!\n" +
+	"\frecord_count\x18\x01 \x01(\x05R\vrecordCount\x12\x16\n" +
+	"\x06status\x18\x02 \x01(\tR\x06status2A\n" +
+	"\vUserService\x122\n" +
+	"\tUploadLog\x12\x0e.user.LogEntry\x1a\x13.user.UploadSummary(\x01B\x0fZ\r./gen;user_pbb\x06proto3"
 
 var (
 	file_proto_main_proto_rawDescOnce sync.Once
@@ -153,12 +162,12 @@ func file_proto_main_proto_rawDescGZIP() []byte {
 
 var file_proto_main_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_proto_main_proto_goTypes = []any{
-	(*UserRequest)(nil),  // 0: user.UserRequest
-	(*UserResponse)(nil), // 1: user.UserResponse
+	(*LogEntry)(nil),      // 0: user.LogEntry
+	(*UploadSummary)(nil), // 1: user.UploadSummary
 }
 var file_proto_main_proto_depIdxs = []int32{
-	0, // 0: user.UserService.GetUser:input_type -> user.UserRequest
-	1, // 1: user.UserService.GetUser:output_type -> user.UserResponse
+	0, // 0: user.UserService.UploadLog:input_type -> user.LogEntry
+	1, // 1: user.UserService.UploadLog:output_type -> user.UploadSummary
 	1, // [1:2] is the sub-list for method output_type
 	0, // [0:1] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name

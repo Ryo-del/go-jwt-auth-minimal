@@ -3,16 +3,17 @@ syntax = "proto3";
 package user;
 option go_package = "./gen;user_pb";
 
-message UserRequest {
-    int32 id = 1;
+message LogEntry {
+    int32 device_id = 1;
+    string message = 2;
+    string level = 3;
 }
 
-message UserResponse {
-    string name = 1;
-    int32 age = 2;
-    repeated string tags = 3;
+message UploadSummary {
+    int32 record_count = 1;
+    string status = 2;
 }
 
 service UserService {
-    rpc GetUser (UserRequest) returns (UserResponse);
+    rpc UploadLog(stream LogEntry) returns (UploadSummary);
 }
