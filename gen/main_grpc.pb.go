@@ -4,7 +4,7 @@
 // - protoc             v7.34.1
 // source: proto/main.proto
 
-package user_pb
+package main
 
 import (
 	context "context"
@@ -19,96 +19,141 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	UserService_UploadLog_FullMethodName = "/user.UserService/UploadLog"
+	TODO_CreateItem_FullMethodName = "/main.TODO/CreateItem"
+	TODO_DoneItem_FullMethodName   = "/main.TODO/DoneItem"
 )
 
-// UserServiceClient is the client API for UserService service.
+// TODOClient is the client API for TODO service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
-type UserServiceClient interface {
-	UploadLog(ctx context.Context, opts ...grpc.CallOption) (grpc.ClientStreamingClient[LogEntry, UploadSummary], error)
+type TODOClient interface {
+	CreateItem(ctx context.Context, in *CreateItemRequest, opts ...grpc.CallOption) (*CreateItemResponse, error)
+	DoneItem(ctx context.Context, in *DoneItemRequest, opts ...grpc.CallOption) (*DoneItemResponse, error)
 }
 
-type userServiceClient struct {
+type tODOClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewUserServiceClient(cc grpc.ClientConnInterface) UserServiceClient {
-	return &userServiceClient{cc}
+func NewTODOClient(cc grpc.ClientConnInterface) TODOClient {
+	return &tODOClient{cc}
 }
 
-func (c *userServiceClient) UploadLog(ctx context.Context, opts ...grpc.CallOption) (grpc.ClientStreamingClient[LogEntry, UploadSummary], error) {
+func (c *tODOClient) CreateItem(ctx context.Context, in *CreateItemRequest, opts ...grpc.CallOption) (*CreateItemResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	stream, err := c.cc.NewStream(ctx, &UserService_ServiceDesc.Streams[0], UserService_UploadLog_FullMethodName, cOpts...)
+	out := new(CreateItemResponse)
+	err := c.cc.Invoke(ctx, TODO_CreateItem_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
-	x := &grpc.GenericClientStream[LogEntry, UploadSummary]{ClientStream: stream}
-	return x, nil
+	return out, nil
 }
 
-// This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
-type UserService_UploadLogClient = grpc.ClientStreamingClient[LogEntry, UploadSummary]
+func (c *tODOClient) DoneItem(ctx context.Context, in *DoneItemRequest, opts ...grpc.CallOption) (*DoneItemResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(DoneItemResponse)
+	err := c.cc.Invoke(ctx, TODO_DoneItem_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
 
-// UserServiceServer is the server API for UserService service.
-// All implementations must embed UnimplementedUserServiceServer
+// TODOServer is the server API for TODO service.
+// All implementations must embed UnimplementedTODOServer
 // for forward compatibility.
-type UserServiceServer interface {
-	UploadLog(grpc.ClientStreamingServer[LogEntry, UploadSummary]) error
-	mustEmbedUnimplementedUserServiceServer()
+type TODOServer interface {
+	CreateItem(context.Context, *CreateItemRequest) (*CreateItemResponse, error)
+	DoneItem(context.Context, *DoneItemRequest) (*DoneItemResponse, error)
+	mustEmbedUnimplementedTODOServer()
 }
 
-// UnimplementedUserServiceServer must be embedded to have
+// UnimplementedTODOServer must be embedded to have
 // forward compatible implementations.
 //
 // NOTE: this should be embedded by value instead of pointer to avoid a nil
 // pointer dereference when methods are called.
-type UnimplementedUserServiceServer struct{}
+type UnimplementedTODOServer struct{}
 
-func (UnimplementedUserServiceServer) UploadLog(grpc.ClientStreamingServer[LogEntry, UploadSummary]) error {
-	return status.Error(codes.Unimplemented, "method UploadLog not implemented")
+func (UnimplementedTODOServer) CreateItem(context.Context, *CreateItemRequest) (*CreateItemResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method CreateItem not implemented")
 }
-func (UnimplementedUserServiceServer) mustEmbedUnimplementedUserServiceServer() {}
-func (UnimplementedUserServiceServer) testEmbeddedByValue()                     {}
+func (UnimplementedTODOServer) DoneItem(context.Context, *DoneItemRequest) (*DoneItemResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method DoneItem not implemented")
+}
+func (UnimplementedTODOServer) mustEmbedUnimplementedTODOServer() {}
+func (UnimplementedTODOServer) testEmbeddedByValue()              {}
 
-// UnsafeUserServiceServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to UserServiceServer will
+// UnsafeTODOServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to TODOServer will
 // result in compilation errors.
-type UnsafeUserServiceServer interface {
-	mustEmbedUnimplementedUserServiceServer()
+type UnsafeTODOServer interface {
+	mustEmbedUnimplementedTODOServer()
 }
 
-func RegisterUserServiceServer(s grpc.ServiceRegistrar, srv UserServiceServer) {
-	// If the following call panics, it indicates UnimplementedUserServiceServer was
+func RegisterTODOServer(s grpc.ServiceRegistrar, srv TODOServer) {
+	// If the following call panics, it indicates UnimplementedTODOServer was
 	// embedded by pointer and is nil.  This will cause panics if an
 	// unimplemented method is ever invoked, so we test this at initialization
 	// time to prevent it from happening at runtime later due to I/O.
 	if t, ok := srv.(interface{ testEmbeddedByValue() }); ok {
 		t.testEmbeddedByValue()
 	}
-	s.RegisterService(&UserService_ServiceDesc, srv)
+	s.RegisterService(&TODO_ServiceDesc, srv)
 }
 
-func _UserService_UploadLog_Handler(srv interface{}, stream grpc.ServerStream) error {
-	return srv.(UserServiceServer).UploadLog(&grpc.GenericServerStream[LogEntry, UploadSummary]{ServerStream: stream})
+func _TODO_CreateItem_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateItemRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TODOServer).CreateItem(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TODO_CreateItem_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TODOServer).CreateItem(ctx, req.(*CreateItemRequest))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
-// This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
-type UserService_UploadLogServer = grpc.ClientStreamingServer[LogEntry, UploadSummary]
+func _TODO_DoneItem_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DoneItemRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TODOServer).DoneItem(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TODO_DoneItem_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TODOServer).DoneItem(ctx, req.(*DoneItemRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
 
-// UserService_ServiceDesc is the grpc.ServiceDesc for UserService service.
+// TODO_ServiceDesc is the grpc.ServiceDesc for TODO service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
-var UserService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "user.UserService",
-	HandlerType: (*UserServiceServer)(nil),
-	Methods:     []grpc.MethodDesc{},
-	Streams: []grpc.StreamDesc{
+var TODO_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "main.TODO",
+	HandlerType: (*TODOServer)(nil),
+	Methods: []grpc.MethodDesc{
 		{
-			StreamName:    "UploadLog",
-			Handler:       _UserService_UploadLog_Handler,
-			ClientStreams: true,
+			MethodName: "CreateItem",
+			Handler:    _TODO_CreateItem_Handler,
+		},
+		{
+			MethodName: "DoneItem",
+			Handler:    _TODO_DoneItem_Handler,
 		},
 	},
+	Streams:  []grpc.StreamDesc{},
 	Metadata: "proto/main.proto",
 }

@@ -4,7 +4,7 @@
 // 	protoc        v7.34.1
 // source: proto/main.proto
 
-package user_pb
+package main
 
 import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
@@ -21,29 +21,27 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-type LogEntry struct {
+type CreateItemRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	DeviceId      int32                  `protobuf:"varint,1,opt,name=device_id,json=deviceId,proto3" json:"device_id,omitempty"`
-	Message       string                 `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
-	Level         string                 `protobuf:"bytes,3,opt,name=level,proto3" json:"level,omitempty"`
+	Title         string                 `protobuf:"bytes,1,opt,name=title,proto3" json:"title,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *LogEntry) Reset() {
-	*x = LogEntry{}
+func (x *CreateItemRequest) Reset() {
+	*x = CreateItemRequest{}
 	mi := &file_proto_main_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *LogEntry) String() string {
+func (x *CreateItemRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*LogEntry) ProtoMessage() {}
+func (*CreateItemRequest) ProtoMessage() {}
 
-func (x *LogEntry) ProtoReflect() protoreflect.Message {
+func (x *CreateItemRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_proto_main_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -55,54 +53,38 @@ func (x *LogEntry) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use LogEntry.ProtoReflect.Descriptor instead.
-func (*LogEntry) Descriptor() ([]byte, []int) {
+// Deprecated: Use CreateItemRequest.ProtoReflect.Descriptor instead.
+func (*CreateItemRequest) Descriptor() ([]byte, []int) {
 	return file_proto_main_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *LogEntry) GetDeviceId() int32 {
+func (x *CreateItemRequest) GetTitle() string {
 	if x != nil {
-		return x.DeviceId
-	}
-	return 0
-}
-
-func (x *LogEntry) GetMessage() string {
-	if x != nil {
-		return x.Message
+		return x.Title
 	}
 	return ""
 }
 
-func (x *LogEntry) GetLevel() string {
-	if x != nil {
-		return x.Level
-	}
-	return ""
-}
-
-type UploadSummary struct {
+type CreateItemResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	RecordCount   int32                  `protobuf:"varint,1,opt,name=record_count,json=recordCount,proto3" json:"record_count,omitempty"`
-	Status        string                 `protobuf:"bytes,2,opt,name=status,proto3" json:"status,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *UploadSummary) Reset() {
-	*x = UploadSummary{}
+func (x *CreateItemResponse) Reset() {
+	*x = CreateItemResponse{}
 	mi := &file_proto_main_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *UploadSummary) String() string {
+func (x *CreateItemResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*UploadSummary) ProtoMessage() {}
+func (*CreateItemResponse) ProtoMessage() {}
 
-func (x *UploadSummary) ProtoReflect() protoreflect.Message {
+func (x *CreateItemResponse) ProtoReflect() protoreflect.Message {
 	mi := &file_proto_main_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -114,39 +96,106 @@ func (x *UploadSummary) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use UploadSummary.ProtoReflect.Descriptor instead.
-func (*UploadSummary) Descriptor() ([]byte, []int) {
+// Deprecated: Use CreateItemResponse.ProtoReflect.Descriptor instead.
+func (*CreateItemResponse) Descriptor() ([]byte, []int) {
 	return file_proto_main_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *UploadSummary) GetRecordCount() int32 {
-	if x != nil {
-		return x.RecordCount
-	}
-	return 0
+type DoneItemRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
-func (x *UploadSummary) GetStatus() string {
+func (x *DoneItemRequest) Reset() {
+	*x = DoneItemRequest{}
+	mi := &file_proto_main_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DoneItemRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DoneItemRequest) ProtoMessage() {}
+
+func (x *DoneItemRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_main_proto_msgTypes[2]
 	if x != nil {
-		return x.Status
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DoneItemRequest.ProtoReflect.Descriptor instead.
+func (*DoneItemRequest) Descriptor() ([]byte, []int) {
+	return file_proto_main_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *DoneItemRequest) GetId() string {
+	if x != nil {
+		return x.Id
 	}
 	return ""
+}
+
+type DoneItemResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DoneItemResponse) Reset() {
+	*x = DoneItemResponse{}
+	mi := &file_proto_main_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DoneItemResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DoneItemResponse) ProtoMessage() {}
+
+func (x *DoneItemResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_main_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DoneItemResponse.ProtoReflect.Descriptor instead.
+func (*DoneItemResponse) Descriptor() ([]byte, []int) {
+	return file_proto_main_proto_rawDescGZIP(), []int{3}
 }
 
 var File_proto_main_proto protoreflect.FileDescriptor
 
 const file_proto_main_proto_rawDesc = "" +
 	"\n" +
-	"\x10proto/main.proto\x12\x04user\"W\n" +
-	"\bLogEntry\x12\x1b\n" +
-	"\tdevice_id\x18\x01 \x01(\x05R\bdeviceId\x12\x18\n" +
-	"\amessage\x18\x02 \x01(\tR\amessage\x12\x14\n" +
-	"\x05level\x18\x03 \x01(\tR\x05level\"J\n" +
-	"\rUploadSummary\x12!\n" +
-	"\frecord_count\x18\x01 \x01(\x05R\vrecordCount\x12\x16\n" +
-	"\x06status\x18\x02 \x01(\tR\x06status2A\n" +
-	"\vUserService\x122\n" +
-	"\tUploadLog\x12\x0e.user.LogEntry\x1a\x13.user.UploadSummary(\x01B\x0fZ\r./gen;user_pbb\x06proto3"
+	"\x10proto/main.proto\x12\x04main\")\n" +
+	"\x11CreateItemRequest\x12\x14\n" +
+	"\x05title\x18\x01 \x01(\tR\x05title\"\x14\n" +
+	"\x12CreateItemResponse\"!\n" +
+	"\x0fDoneItemRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\"\x12\n" +
+	"\x10DoneItemResponse2\x82\x01\n" +
+	"\x04TODO\x12?\n" +
+	"\n" +
+	"CreateItem\x12\x17.main.CreateItemRequest\x1a\x18.main.CreateItemResponse\x129\n" +
+	"\bDoneItem\x12\x15.main.DoneItemRequest\x1a\x16.main.DoneItemResponseB\bZ\x06.;mainb\x06proto3"
 
 var (
 	file_proto_main_proto_rawDescOnce sync.Once
@@ -160,16 +209,20 @@ func file_proto_main_proto_rawDescGZIP() []byte {
 	return file_proto_main_proto_rawDescData
 }
 
-var file_proto_main_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
+var file_proto_main_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
 var file_proto_main_proto_goTypes = []any{
-	(*LogEntry)(nil),      // 0: user.LogEntry
-	(*UploadSummary)(nil), // 1: user.UploadSummary
+	(*CreateItemRequest)(nil),  // 0: main.CreateItemRequest
+	(*CreateItemResponse)(nil), // 1: main.CreateItemResponse
+	(*DoneItemRequest)(nil),    // 2: main.DoneItemRequest
+	(*DoneItemResponse)(nil),   // 3: main.DoneItemResponse
 }
 var file_proto_main_proto_depIdxs = []int32{
-	0, // 0: user.UserService.UploadLog:input_type -> user.LogEntry
-	1, // 1: user.UserService.UploadLog:output_type -> user.UploadSummary
-	1, // [1:2] is the sub-list for method output_type
-	0, // [0:1] is the sub-list for method input_type
+	0, // 0: main.TODO.CreateItem:input_type -> main.CreateItemRequest
+	2, // 1: main.TODO.DoneItem:input_type -> main.DoneItemRequest
+	1, // 2: main.TODO.CreateItem:output_type -> main.CreateItemResponse
+	3, // 3: main.TODO.DoneItem:output_type -> main.DoneItemResponse
+	2, // [2:4] is the sub-list for method output_type
+	0, // [0:2] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name
 	0, // [0:0] is the sub-list for extension extendee
 	0, // [0:0] is the sub-list for field type_name
@@ -186,7 +239,7 @@ func file_proto_main_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_proto_main_proto_rawDesc), len(file_proto_main_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   2,
+			NumMessages:   4,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

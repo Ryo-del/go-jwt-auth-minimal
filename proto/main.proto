@@ -1,19 +1,24 @@
 syntax = "proto3";
 
-package user;
-option go_package = "./gen;user_pb";
+package main;
 
-message LogEntry {
-    int32 device_id = 1;
-    string message = 2;
-    string level = 3;
+option go_package = ".;main";
+
+
+message CreateItemRequest {
+    string title = 1;
 }
 
-message UploadSummary {
-    int32 record_count = 1;
-    string status = 2;
+message CreateItemResponse {}
+
+message DoneItemRequest {
+    string id = 1;
 }
 
-service UserService {
-    rpc UploadLog(stream LogEntry) returns (UploadSummary);
+message DoneItemResponse {}
+
+
+service TODO {
+    rpc CreateItem(CreateItemRequest) returns (CreateItemResponse);
+    rpc DoneItem(DoneItemRequest) returns (DoneItemResponse);
 }

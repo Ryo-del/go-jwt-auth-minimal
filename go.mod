@@ -3,12 +3,12 @@ module github.com/Ryo-del/test-grpc
 go 1.24.5
 
 require (
+	github.com/lib/pq v1.12.3
 	google.golang.org/grpc v1.80.0
 	google.golang.org/protobuf v1.36.11
 )
 
 require (
-	github.com/lib/pq v1.12.3 // indirect
 	golang.org/x/net v0.49.0 // indirect
 	golang.org/x/sys v0.40.0 // indirect
 	golang.org/x/text v0.33.0 // indirect
