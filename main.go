@@ -6,6 +6,7 @@ import (
 )
 
 func Test(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("request from:", r.RemoteAddr)
 	fmt.Fprintf(w, "hello world")
 }
 
